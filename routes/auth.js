@@ -31,7 +31,10 @@ router.post("/login", async (req, res) => {
     );
     if (!isValidPassword) return res.status(400).send("パスワードが違います");
 
-    return res.status(200).json(user);
+    // セキュリティ上不必要なデータを除外したデータのみにする
+    const { password, updatedAt, ...other } = user._doc;
+
+    return res.status(200).json(other);
   } catch (err) {
     return res.status(500).json(err);
   }
